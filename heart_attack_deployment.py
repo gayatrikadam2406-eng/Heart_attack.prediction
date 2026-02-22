@@ -2,42 +2,47 @@
 
 import streamlit as st
 import joblib
+import pandas as pd
 
-model = joblib.load("dtc_model(1) (1).pkl")
+# Load trained model
+model = joblib.load("dtc_model(1).pkl")
 
-st.title("Heart_attack_prediction !")
+st.title("Heart Attack Prediction")
 
+# Show expected model features (for debugging - you can remove later)
+st.write("Model expects:", model.feature_names_in_)
+
+# User Inputs
 Age = st.number_input("Age")
-Gender = st.number_input("Gender")
-Heart_rate = st.number_input("Heart_rate")
-Systolic_blood_pressure = st.number_input("Systolic_blood_pressure")
-Diastolic_blood_pressure = st.number_input("Diastolic_blood_pressure")
-Blood_sugar = st.number_input("Blood_sugar")
-CK-MB = st.number_input("CK-MB")
+Gender = st.number_input("Gender (0 = Female, 1 = Male)")
+Heart_rate = st.number_input("Heart Rate")
+Systolic_blood_pressure = st.number_input("Systolic Blood Pressure")
+Diastolic_blood_pressure = st.number_input("Diastolic Blood Pressure")
+Blood_sugar = st.number_input("Blood Sugar")
+CK_MB = st.number_input("CK-MB")
 Troponin = st.number_input("Troponin")
-Result = st.number_input("Result")
-
-
-input_data = pd.DataFrame({
-    "Age": Age,
-    "Gender": Gender,
-    "Heart_rate": Heart_rate,
-    "Systolic_blood_pressure": Systolic_blood_pressure,
-    "Diastolic_blood_pressure": Diastolic_blood_pressure,
-    "Blood_sugar": Blood_sugar,
-    "CK-MB": CK-MB,
-    "Troponin": Troponin,
-    "Result": Result
-    
-})
 
 if st.button("Predict"):
 
-    input_array = np.array([input_data])
+    # Store input values in same order as model expects
+    values = [
+        Age,
+        Gender,
+        Heart_rate,
+        Systolic_blood_pressure,
+        Diastolic_blood_pressure,
+        Blood_sugar,
+        CK_MB,
+        Troponin
+    ]
 
-    prediction = model.predict(input_array)[0]
+    # Create DataFrame using model's exact feature names
+    input_data = pd.DataFrame([values], columns=model.feature_names_in_)
+
+    # Make prediction
+    prediction = model.predict(input_data)[0]
 
     if prediction == 0:
-        st.write("The patient is Normal")
+        st.success("The patient is Normal")
     else:
-        st.write("The patient has Heart Disease")
+        st.error("The patient has Heart Disease")
