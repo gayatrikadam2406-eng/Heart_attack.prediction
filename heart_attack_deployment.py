@@ -3,24 +3,25 @@
 import streamlit as st
 import joblib
 import pandas as pd
-import numpy as np
 
 # Load trained model
 model = joblib.load("dtc_model(1).pkl")
 
 st.title("Heart Attack Prediction")
 
-# User Inputs
-Age = st.number_input("Age")
-Gender = st.number_input("Gender (0 = Female, 1 = Male)")
-Heart_rate = st.number_input("Heart Rate")
-Systolic_blood_pressure = st.number_input("Systolic Blood Pressure")
-Diastolic_blood_pressure = st.number_input("Diastolic Blood Pressure")
-Blood_sugar = st.number_input("Blood Sugar")
-CK_MB = st.number_input("CK-MB")
-Troponin = st.number_input("Troponin")
+st.write("Enter patient medical details below:")
 
-# Create DataFrame (ONLY FEATURES — no Result column)
+# User Inputs
+Age = st.number_input("Age", min_value=0)
+Gender = st.selectbox("Gender", [0, 1])  # 0 = Female, 1 = Male
+Heart_rate = st.number_input("Heart Rate", min_value=0)
+Systolic_blood_pressure = st.number_input("Systolic Blood Pressure", min_value=0)
+Diastolic_blood_pressure = st.number_input("Diastolic Blood Pressure", min_value=0)
+Blood_sugar = st.number_input("Blood Sugar", min_value=0.0)
+CK_MB = st.number_input("CK-MB", min_value=0.0)
+Troponin = st.number_input("Troponin", min_value=0.0)
+
+# Create input dataframe (must match training column names exactly)
 input_data = pd.DataFrame([{
     "Age": Age,
     "Gender": Gender,
