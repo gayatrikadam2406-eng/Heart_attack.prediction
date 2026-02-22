@@ -5,7 +5,7 @@ import joblib
 import pandas as pd
 
 # Load trained model
-model = joblib.load("dtc_model(1).pkl")
+model = joblib.load("dtc_model(1) (1).pkl")
 
 st.title("Heart_attack_prediction")
 
