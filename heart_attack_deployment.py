@@ -2,48 +2,42 @@
 
 import streamlit as st
 import joblib
-import pandas as pd
 
-# Load trained model
 model = joblib.load("dtc_model(1) (1).pkl")
 
-st.title("Heart_attack_prediction")
+st.title("Heart_attack_prediction !")
 
-# Inputs
 Age = st.number_input("Age")
-Gender = st.selectbox("Gender (0 = Female, 1 = Male)", [0, 1])
-Heart_rate = st.number_input("Heart rate")
-Systolic_bp = st.number_input("Systolic blood pressure")
-Diastolic_bp = st.number_input("Diastolic blood pressure")
-Blood_sugar = st.number_input("Blood sugar")
-CK_MB = st.number_input("CK-MB")
+Gender = st.number_input("Gender")
+Heart_rate = st.number_input("Heart_rate")
+Systolic_blood_pressure = st.number_input("Systolic_blood_pressure")
+Diastolic_blood_pressure = st.number_input("Diastolic_blood_pressure")
+Blood_sugar = st.number_input("Blood_sugar")
+CK-MB = st.number_input("CK-MB")
 Troponin = st.number_input("Troponin")
+Result = st.number_input("Result")
 
-# IMPORTANT: Column names MUST match training dataset EXACTLY
-input_data = pd.DataFrame([[
-    Age,
-    Gender,
-    Heart_rate,
-    Systolic_bp,
-    Diastolic_bp,
-    Blood_sugar,
-    CK_MB,
-    Troponin
-]], columns=[
-    "Age",
-    "Gender",
-    "Heart rate",
-    "Systolic blood pressure",
-    "Diastolic blood pressure",
-    "Blood sugar",
-    "CK-MB",
-    "Troponin"
-])
+
+input_data = pd.DataFrame({
+    "Age": Age,
+    "Gender": Gender,
+    "Heart_rate": Heart_rate,
+    "Systolic_blood_pressure": Systolic_blood_pressure,
+    "Diastolic_blood_pressure": Diastolic_blood_pressure,
+    "Blood_sugar": Blood_sugar,
+    "CK-MB": CK-MB,
+    "Troponin": Troponin,
+    "Result": Result
+    
+})
 
 if st.button("Predict"):
-    prediction = model.predict(input_data)[0]
+
+    input_array = np.array([input_data])
+
+    prediction = model.predict(input_array)[0]
 
     if prediction == 0:
-        st.success("The patient is Normal")
+        st.write("The patient is Normal")
     else:
-        st.error("The patient has Heart Disease")
+        st.write("The patient has Heart Disease")
