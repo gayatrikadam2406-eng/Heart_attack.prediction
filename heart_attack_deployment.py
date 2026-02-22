@@ -7,7 +7,7 @@ import pandas as pd
 # Load trained model
 model = joblib.load("dtc_model(1).pkl")
 
-st.title("Heart Attack Prediction")
+st.title("Heart_attack_prediction")
 
 st.write("Enter patient medical details below:")
 
